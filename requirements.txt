@@ -1,0 +1,8 @@
+flask
+python-dotenv
+sqlalchemy
+flask-sqlalchemy
+flask-socketio
+alembic
+flask-migrate
+flask-cors
