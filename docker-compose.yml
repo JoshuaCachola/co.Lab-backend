@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  backend:
+    build: .
+    environment:
+      DATABASE_URL: postgres://colab_app:password@db:5432/colab_db
+    depends_on:
+      - "db"
+    networks:
+      backend:
+    ports:
+      - "8080:8080"
+    command: ["./wait-for", "db:5432", "-t", "1000", "--", "./entrypoint.sh"]
+  db:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USER: colab_app
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: colab_db
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    networks:
+      backend:
+
+networks:
+  backend:
+  frontend:
+
+volumes:
+  postgres-db:

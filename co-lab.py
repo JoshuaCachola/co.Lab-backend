@@ -1,6 +1,16 @@
 from app import app
+from flask_socketio import SocketIO, send
 import os
 
+
+socketIo = SocketIO(app, cors_allowed_origins='*')
+
+
+@socketIo.on('message')
+def handleMessage(msg):
+    print(msg)
+    send(msg, broadcast=True)
+
+
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT')) or 5000
-    app.run(host='0.0.0.0', port=port)
+    socketIo.run(app)
