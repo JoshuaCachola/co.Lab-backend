@@ -11,6 +11,10 @@ def handleMessage(msg):
     print(msg)
     send(msg, broadcast=True)
 
+@socketIo.on('play-song')
+def handlePlay(msg):
+    print(msg)
+    send(msg, broadcast=True)
 
 if __name__ == '__main__':
     socketIo.run(app)

@@ -4,6 +4,9 @@ db = SQLAlchemy()
 
 
 class User(db.Model):
+    """
+    Class for users model
+    """
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -25,19 +28,22 @@ class User(db.Model):
         }
 
 
-# class Beat(db.Model):
-#     __tablename__ = 'beats'
+class Beat(db.Model):
+    """
+    Class for beats model
+    """
+    __tablename__ = 'beats'
 
-#     id = db.Column(db.Integer, primary_key=True)
-#     title = db.Column(db.String, nullable=False)
-#     url = db.Column(db.String, nullable=False)
-#     cover_art = db.Column(db.String)
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String, nullable=False)
+    url = db.Column(db.String, nullable=False)
+    cover_art = db.Column(db.String)
 
 
-# def to_dict(self):
-#     return {
-#         'id': self.id,
-#         'title': self.title,
-#         'url': self.url,
-#         'cover_art': self.cover_art
-#     }
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'url': self.url,
+            'cover_art': self.cover_art
+        }
