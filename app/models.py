@@ -1,9 +1,15 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 
 db = SQLAlchemy()
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
+    """
+    Class for users model
+        - UserMixin allows the usage of is_authenticated in session.py
+    """
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -13,6 +19,17 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False)
     hashed_pw = db.Column(db.String, nullable=False)
     avatar = db.Column(db.String)
+
+    @property
+    def password(self):
+        return self.hashed_pw
+
+    @password.setter
+    def password(self, pw):
+        self.hashed_pw = generate_password_hash(pw)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
     def to_dict(self):
         return {
@@ -25,19 +42,21 @@ class User(db.Model):
         }
 
 
-# class Beat(db.Model):
-#     __tablename__ = 'beats'
+class Beat(db.Model):
+    """
+    Class for beats model
+    """
+    __tablename__ = 'beats'
 
-#     id = db.Column(db.Integer, primary_key=True)
-#     title = db.Column(db.String, nullable=False)
-#     url = db.Column(db.String, nullable=False)
-#     cover_art = db.Column(db.String)
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String, nullable=False)
+    url = db.Column(db.String, nullable=False)
+    cover_art = db.Column(db.String)
 
-
-# def to_dict(self):
-#     return {
-#         'id': self.id,
-#         'title': self.title,
-#         'url': self.url,
-#         'cover_art': self.cover_art
-#     }
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'url': self.url,
+            'cover_art': self.cover_art
+        }

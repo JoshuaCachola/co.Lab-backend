@@ -4,5 +4,5 @@ bp = Blueprint('api', __name__, url_prefix='/api')
 
 
 @bp.route('/')
-def index():
+def entry_point():
     return 'Hello World'
