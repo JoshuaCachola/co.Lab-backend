@@ -15,6 +15,7 @@ alembic = "*"
 flask-migrate = "*"
 flask-cors = "*"
 psycopg2-binary = "*"
+awscli = "*"
 
 [requires]
 python_version = "3.8"
