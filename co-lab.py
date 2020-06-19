@@ -2,7 +2,7 @@ from app import app
 from flask_socketio import SocketIO, send, join_room, leave_room
 import os
 
-ROOMS = []
+ROOMS = set('cacholaj')
 socketIo = SocketIO(app, cors_allowed_origins='*')
 
 
@@ -24,11 +24,17 @@ def on_leave(data):
 
 @socketIo.on('new_room')
 def new_room(data):
-    ROOMS.append(data['new_room_name'])
+    ROOMS.add(data['new_room_name'])
     room = data['new_room_name']
     username = data['username']
     join_room(data['new_room_name'])
     send({"msg": f'{username} has created the a room'}, room=room)
+
+
+# @socketIo.on('close_room')
+# def close_room(data):
+#     ROOMS.remove(data['remove_room'])
+
 # @socketIo.on('message')
 # def handleMessage(msg):
 #     print(msg)

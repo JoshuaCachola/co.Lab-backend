@@ -1,7 +1,7 @@
 from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
-from flask_login import current_user
 from flask_cors import cross_origin
+from werkzeug.security import check_password_hash, generate_password_hash
 from ..models import db, User
 
 
@@ -49,14 +49,15 @@ def login():
     data = request.json
     try:
         user = User.query.filter_by(username=data['username']).first()
-        auth_token = user.encode_auth_token(user.id)
-        if auth_token:
-            responseObj = {
-                'status': 'success',
-                'message': 'Successfully logged in.',
-                'auth_token': auth_token.decode()
+        if user and user.check_password(data['password']):
+            auth_token = user.encode_auth_token(user.id)
+            if auth_token:
+                responseObj = {
+                    'status': 'success',
+                    'message': 'Successfully logged in.',
+                    'auth_token': auth_token.decode()
                 }
-            return make_response(jsonify(responseObject)), 200
+                return make_response(jsonify(responseObj)), 200
     except Exception as e:
         print(e)
         responseObj = {

@@ -30,19 +30,12 @@ class User(db.Model, UserMixin):
         self.last_name = last_name
         self.username = username
         self.email = email
-        self.hashed_pw = generate_password_hash(password)
+        self.hashed_pw = generate_password_hash(password, 'sha256')
+        # self.hashed_pw = password
         self.registered_on = datetime.datetime.now()
 
-    @property
-    def password(self):
-        return self.hashed_pw
-
-    @password.setter
-    def password(self, pw):
-        self.hashed_pw = generate_password_hash(pw)
-
     def check_password(self, password):
-        return check_password_hash(self.password, password)
+        return check_password_hash(self.hashed_pw, password)
 
     def encode_auth_token(self, user_id):
         """
